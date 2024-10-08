@@ -6,23 +6,26 @@ from .models import Division
 from .models import Division, Message, Agent, Dispatch
 
 
-class DivisionAccess:
-    def create_division(self):
+class DivisionViews:
+    def create_division(self, request):
         division = Division()
         division.save()
-        return division()
+        return redirect('Division')
 
-    def get_all_divisions(self):
-        return Division.objects.all()
+    def get_all_divisions(self, request):
+        all_divisions = Division.objects.all()
+        return render(request, 'division_list.html', {'divisions': all_divisions})
+        
+
+    def get_division_by_id(self, request, division_id: int):
+        division = Division.objects.get(id=division_id)
+        return render(request, 'division_list.html', {'division': division})
     
-    def get_division_by_id(self, division_id: int):
-        return Division.objects.get(id=division_id)
-    
-class MessageAccess:
-    def create_message(self, division_id:int, msg_content:str, msg_done:bool):
+class MessageViews:
+    def create_message(self, request,  division_id:int, msg_content:str, msg_done:bool):
         message = Message(divisionid = division_id, content=msg_content, done=msg_done)
         message.save()
-        return message
+        return redirect('Message')
     
     def get_all_messages(self):
         return Message.objects.all()
@@ -30,7 +33,7 @@ class MessageAccess:
     def get_message_by_message_id(self, msg_id:int):
         return Message.objects.all(id=msg_id)
     
-class AgentAcess:
+class AgentViews:
     def create_agent(self, division_id:int):
         agent = Agent(divisionid = division_id)
         agent.save()
@@ -42,7 +45,7 @@ class AgentAcess:
     def get_agent_by_agent_id(self, agent_id:int):
         return Agent.objects.all(id=agent_id)
 
-class DispatchAccess:
+class DispatchViews:
     def get_all_dispatches(self):
         return Dispatch.objects.all()
 
