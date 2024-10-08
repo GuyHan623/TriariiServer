@@ -27,27 +27,31 @@ class MessageViews:
         message.save()
         return redirect('Message')
     
-    def get_all_messages(self):
-        return Message.objects.all()
-
-    def get_message_by_message_id(self, msg_id:int):
-        return Message.objects.all(id=msg_id)
+    def get_all_messages(self, request):
+        all_messages =  Message.objects.all()
+        return render(request, 'message_list.html', {'Messages': all_messages})
     
+    def get_message_by_message_id(self,request, msg_id:int):
+        message =  Message.objects.all(id=msg_id)
+        return render(request, 'message_list.html', {'Message': message})
+
 class AgentViews:
-    def create_agent(self, division_id:int):
+    def create_agent(self, request, division_id:int):
         agent = Agent(divisionid = division_id)
         agent.save()
-        return agent
+        return redirect('Agent')
     
-    def get_all_agents(self):
-        return Agent.objects.all()
+    def get_all_agents(self, request):
+        all_agents = Agent.objects.all()
+        return render(request, 'agent_list.html', {'Agents': all_agents})
     
-    def get_agent_by_agent_id(self, agent_id:int):
-        return Agent.objects.all(id=agent_id)
+    def get_agent_by_agent_id(self, request, agent_id:int):
+        agent =  Agent.objects.all(id=agent_id)
+        return render(request, 'agent_list.html', {'Agent': agent})
 
 class DispatchViews:
-    def get_all_dispatches(self):
-        return Dispatch.objects.all()
-
+    def get_all_dispatches(self, request):
+        all_dispatches =  Dispatch.objects.all()
+        return render(request, 'dispatches_list.html', {'Disaptches': all_dispatches})
 
 
