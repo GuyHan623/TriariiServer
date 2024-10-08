@@ -1,6 +1,5 @@
 from django.views import View
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Division
 # Create your views here.
 
 from .models import Division, Message, Agent, Dispatch
@@ -8,9 +7,10 @@ from .models import Division, Message, Agent, Dispatch
 
 class DivisionViews:
     def create_division(self, request):
-        division = Division()
-        division.save()
-        return redirect('Division')
+        if request.method == 'POST':
+            division = Division()
+            division.save()
+            return redirect('Division')
 
     def get_all_divisions(self, request):
         all_divisions = Division.objects.all()
@@ -23,9 +23,10 @@ class DivisionViews:
     
 class MessageViews:
     def create_message(self, request,  division_id:int, msg_content:str, msg_done:bool):
-        message = Message(divisionid = division_id, content=msg_content, done=msg_done)
-        message.save()
-        return redirect('Message')
+        if request.method == 'POST':
+            message = Message(divisionid = division_id, content=msg_content, done=msg_done)
+            message.save()
+            return redirect('Message')
     
     def get_all_messages(self, request):
         all_messages =  Message.objects.all()
@@ -37,9 +38,10 @@ class MessageViews:
 
 class AgentViews:
     def create_agent(self, request, division_id:int):
-        agent = Agent(divisionid = division_id)
-        agent.save()
-        return redirect('Agent')
+        if request.method == 'POST':
+            agent = Agent(divisionid = division_id)
+            agent.save()
+            return redirect('Agent')
     
     def get_all_agents(self, request):
         all_agents = Agent.objects.all()
